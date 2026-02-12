@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Syndicate - Organisation GTA</title>
+    <title>Organisation GTA</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Saira+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,650 +16,237 @@
             --text-muted: #9ca3af;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Saira Condensed', sans-serif;
-            background: var(--dark-1);
-            color: var(--accent-white);
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
+        /* --- SYSTÈME DE CONNEXION --- */
+        #login-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(220, 38, 38, 0.03) 10px,
-                    rgba(220, 38, 38, 0.03) 20px
-                );
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .dashboard {
-            min-height: 100vh;
-        }
-
-        .dashboard-header {
-            background: var(--dark-2);
-            border-bottom: 4px solid var(--primary-red);
-            padding: 25px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .dashboard-header::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            right: 0;
-            width: 200px;
-            height: 4px;
-            background: var(--primary-gold);
-        }
-
-        .dashboard-logo h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            color: var(--primary-red);
-            letter-spacing: 4px;
-            text-shadow: 3px 3px 0 var(--primary-gold);
-        }
-
-        .dashboard-main {
-            display: flex;
-            min-height: calc(100vh - 100px);
-        }
-
-        .sidebar {
-            width: 300px;
-            background: var(--dark-2);
-            border-right: 3px solid var(--dark-3);
-            padding: 40px 0;
-        }
-
-        .sidebar-item {
-            padding: 20px 40px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-            position: relative;
-        }
-
-        .sidebar-item:hover {
-            background: rgba(220, 38, 38, 0.1);
-            border-left-color: var(--primary-red);
-        }
-
-        .sidebar-item.active {
-            background: rgba(220, 38, 38, 0.2);
-            border-left-color: var(--primary-red);
-            color: var(--primary-gold);
-        }
-
-        .sidebar-item.active::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-right: 15px solid var(--dark-1);
-        }
-
-        .content-area {
-            flex: 1;
-            padding: 50px;
             background: var(--dark-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
         }
 
-        .content-section {
-            display: none;
-            animation: fadeInContent 0.5s ease;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeInContent {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .section-header {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3.5rem;
-            color: var(--primary-red);
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-            text-shadow: 3px 3px 0 var(--primary-gold);
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        .section-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-red), var(--primary-gold));
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
+        .login-box {
             background: var(--dark-2);
-            border: 3px solid var(--dark-3);
-            padding: 35px;
-            position: relative;
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            right: -3px;
-            width: 40px;
-            height: 40px;
-            background: var(--primary-gold);
-            clip-path: polygon(100% 0, 100% 100%, 0 100%);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--primary-red);
-            transform: translateY(-5px);
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .stat-value {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3.5rem;
-            color: var(--primary-red);
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 0 var(--primary-gold);
-        }
-
-        .info-panel {
-            background: var(--dark-2);
-            border: 3px solid var(--dark-3);
             padding: 40px;
-            margin-bottom: 30px;
+            border: 3px solid var(--primary-red);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
 
-        .info-panel h3 {
+        .login-box h2 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            color: var(--primary-gold);
-            letter-spacing: 3px;
+            color: var(--primary-red);
+            font-size: 2.5rem;
             margin-bottom: 20px;
+            letter-spacing: 3px;
         }
 
-        .info-panel p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .operation-card {
-            background: var(--dark-2);
-            border-left: 5px solid var(--primary-red);
-            padding: 30px;
-            margin-bottom: 25px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .operation-card:hover {
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
             background: var(--dark-3);
-            transform: translateX(10px);
+            border: 1px solid var(--dark-3);
+            color: white;
+            font-family: 'Saira Condensed', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
         }
 
-        .operation-status {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
-        }
-
-        .status-active {
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
             background: var(--primary-red);
             color: white;
+            border: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .status-planned {
+        .login-box button:hover {
             background: var(--primary-gold);
             color: var(--dark-1);
         }
 
-        .status-completed {
-            background: var(--dark-3);
-            color: var(--text-muted);
+        #main-content {
+            display: none;
         }
 
-        .operation-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            color: var(--primary-gold);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-
-        .operation-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .operation-detail {
-            font-size: 1rem;
-        }
-
-        .operation-detail strong {
-            color: var(--primary-red);
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .id-card {
-            max-width: 800px;
-            background: var(--dark-2);
-            border: 4px solid var(--primary-red);
-            padding: 50px;
-            position: relative;
-            clip-path: polygon(
-                0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 
-                40px 100%, 0 calc(100% - 40px)
-            );
-        }
-
-        .id-card::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 80px;
-            height: 80px;
-            background: var(--primary-gold);
-            clip-path: polygon(100% 0, 100% 100%, 0 0);
-        }
-
-        .id-card::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: -4px;
-            width: 80px;
-            height: 80px;
-            background: var(--primary-gold);
-            clip-path: polygon(0 100%, 100% 100%, 0 0);
-        }
-
-        .id-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 3px solid var(--dark-3);
-        }
-
-        .id-header h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            color: var(--primary-red);
-            letter-spacing: 4px;
-            text-shadow: 2px 2px 0 var(--primary-gold);
-        }
-
-        .id-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .id-field {
-            margin-bottom: 25px;
-        }
-
-        .id-field label {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .id-field .value {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary-gold);
-            letter-spacing: 2px;
-        }
-
-        .id-photo {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 3px solid var(--dark-3);
-        }
-
-        .photo-placeholder {
-            width: 200px;
-            height: 200px;
-            background: var(--dark-3);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: var(--primary-red);
-            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard-main {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 3px solid var(--dark-3);
-                padding: 20px 0;
-            }
-
-            .content-area {
-                padding: 30px 20px;
-            }
-
-            .id-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-header {
-                padding: 20px;
-            }
-
-            .section-header {
-                font-size: 2.5rem;
-            }
-        }
+        /* --- STYLE DASHBOARD --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Saira Condensed', sans-serif; background: var(--dark-1); color: var(--accent-white); overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(220, 38, 38, 0.03) 10px, rgba(220, 38, 38, 0.03) 20px); pointer-events: none; z-index: 0; }
+        .container { position: relative; z-index: 1; }
+        .dashboard-header { background: var(--dark-2); border-bottom: 4px solid var(--primary-red); padding: 25px 50px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .dashboard-header::after { content: ''; position: absolute; bottom: -4px; right: 0; width: 200px; height: 4px; background: var(--primary-gold); }
+        .dashboard-logo h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-red); letter-spacing: 4px; text-shadow: 3px 3px 0 var(--primary-gold); }
+        .dashboard-main { display: flex; min-height: calc(100vh - 100px); }
+        .sidebar { width: 300px; background: var(--dark-2); border-right: 3px solid var(--dark-3); padding: 40px 0; }
+        .sidebar-item { padding: 20px 40px; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; border-left: 4px solid transparent; position: relative; }
+        .sidebar-item:hover { background: rgba(220, 38, 38, 0.1); border-left-color: var(--primary-red); }
+        .sidebar-item.active { background: rgba(220, 38, 38, 0.2); border-left-color: var(--primary-red); color: var(--primary-gold); }
+        .content-area { flex: 1; padding: 50px; background: var(--dark-1); }
+        .content-section { display: none; animation: fadeInContent 0.5s ease; }
+        .content-section.active { display: block; }
+        @keyframes fadeInContent { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        .section-header { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-red); letter-spacing: 4px; margin-bottom: 40px; text-shadow: 3px 3px 0 var(--primary-gold); position: relative; padding-bottom: 20px; }
+        .section-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 150px; height: 4px; background: linear-gradient(90deg, var(--primary-red), var(--primary-gold)); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px; }
+        .stat-card { background: var(--dark-2); border: 3px solid var(--dark-3); padding: 35px; position: relative; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); transition: all 0.3s ease; }
+        .stat-card::before { content: ''; position: absolute; bottom: -3px; right: -3px; width: 40px; height: 40px; background: var(--primary-gold); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+        .stat-label { font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-weight: 600; }
+        .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-red); letter-spacing: 2px; text-shadow: 2px 2px 0 var(--primary-gold); }
+        .info-panel { background: var(--dark-2); border: 3px solid var(--dark-3); padding: 40px; margin-bottom: 30px; }
+        .info-panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-gold); letter-spacing: 3px; margin-bottom: 20px; }
+        .info-panel p { font-size: 1.2rem; line-height: 1.8; color: var(--text-muted); }
+        .operation-card { background: var(--dark-2); border-left: 5px solid var(--primary-red); padding: 30px; margin-bottom: 25px; position: relative; transition: all 0.3s ease; }
+        .operation-status { position: absolute; top: 30px; right: 30px; padding: 8px 20px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px); }
+        .status-active { background: var(--primary-red); color: white; }
+        .status-planned { background: var(--primary-gold); color: var(--dark-1); }
+        .status-completed { background: var(--dark-3); color: var(--text-muted); }
+        .operation-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-gold); letter-spacing: 2px; margin-bottom: 15px; }
+        .operation-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .operation-detail strong { color: var(--primary-red); text-transform: uppercase; font-weight: 700; }
+        .id-card { max-width: 800px; background: var(--dark-2); border: 4px solid var(--primary-red); padding: 50px; position: relative; clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px)); }
+        .id-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-red); letter-spacing: 4px; text-align: center; border-bottom: 3px solid var(--dark-3); padding-bottom: 30px; margin-bottom: 40px; }
+        .id-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .id-field label { display: block; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .id-field .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--primary-gold); }
+        .photo-placeholder { width: 200px; height: 200px; background: var(--dark-3); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-red); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>ACCÈS orga</h2>
+            <input type="text" id="username" placeholder="NOM DE CODE">
+            <input type="password" id="password" placeholder="MOT DE PASSE">
+            <button onclick="checkLogin()">IDENTIFICATION</button>
+            <p id="error-msg" style="color: var(--primary-red); margin-top: 15px; display: none; font-weight: bold;">ACCÈS REFUSÉ</p>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
         <div class="dashboard">
             <div class="dashboard-header">
-                <div class="dashboard-logo">
-                    <h2>SYNDICATE</h2>
-                </div>
+                <div class="dashboard-logo"><h2>orga    </h2></div>
             </div>
 
             <div class="dashboard-main">
                 <div class="sidebar">
-                    <div class="sidebar-item active" data-section="information">
-                        📊 Information
-                    </div>
-                    <div class="sidebar-item" data-section="planning">
-                        🎯 Planning des Op
-                    </div>
-                    <div class="sidebar-item" data-section="id-card">
-                        🪪 Carte d'Identité
-                    </div>
+                    <div class="sidebar-item active" data-section="information">📊 Information</div>
+                    <div class="sidebar-item" data-section="planning">🎯 Planning des Op</div>
+                    <div class="sidebar-item" data-section="id-card">🪪 Carte d'Identité</div>
                 </div>
 
                 <div class="content-area">
-                    <!-- INFORMATION SECTION -->
                     <div class="content-section active" id="information">
                         <h2 class="section-header">Information Générale</h2>
-                        
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-label">Membres Actifs</div>
-                                <div class="stat-value">en cour de calcule</div>
+                                <div class="stat-value">en cours de calcul</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Opérations Totales</div>
-                                <div class="stat-value">en cour de calcule</div>
+                                <div class="stat-value">en cours de calcul</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Gains Totaux</div>
-                                <div class="stat-value">$calclule</div>
+                                <div class="stat-value">$calcul</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Niveau Org</div>
-                                <div class="stat-value">calcule</div>
+                                <div class="stat-value">calcul</div>
                             </div>
                         </div>
 
                         <div class="info-panel">
                             <h3>À Propos de l'Organisation</h3>
-                            <p>
-                    en cour d'écriture
-                            </p>
+                            <p>en cours d'écriture</p>
                         </div>
-
                         <div class="info-panel">
                             <h3>Territoires Contrôlés</h3>
-                            <p>
-                                villa
-                            </p>
+                            <p>villa</p>
                         </div>
-
                         <div class="info-panel">
                             <h3>Dernière Mise à Jour</h3>
-                            <p>
-                                Système mis à jour le 12 Février 2026 - Nouvelles fonctionnalités de planification ajoutées
-                            </p>
+                            <p>Système mis à jour le 12 Février 2026 - Nouvelles fonctionnalités de planification ajoutées</p>
                         </div>
                     </div>
 
-                    <!-- PLANNING SECTION -->
                     <div class="content-section" id="planning">
                         <h2 class="section-header">Planning des Opérations</h2>
 
                         <div class="operation-card">
                             <span class="operation-status status-active">En Cours</span>
                             <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
-                                test
-                            </p>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">test</p>
                             <div class="operation-details">
-                                <div class="operation-detail">
-                                    <strong>Date:</strong> 15 Février 2026
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Heure:</strong> 22:00
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Équipe:</strong> 6 membres
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Gain estimé:</strong> $2.1M
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Leader:</strong> Alex Shadow
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Risque:</strong> Élevé
-                                </div>
+                                <div class="operation-detail"><strong>Date:</strong> 15 Février 2026</div>
+                                <div class="operation-detail"><strong>Heure:</strong> 22:00</div>
+                                <div class="operation-detail"><strong>Équipe:</strong> 6 membres</div>
+                                <div class="operation-detail"><strong>Gain estimé:</strong> $2.1M</div>
+                                <div class="operation-detail"><strong>Leader:</strong> Alex Shadow</div>
+                                <div class="operation-detail"><strong>Risque:</strong> Élevé</div>
                             </div>
                         </div>
 
                         <div class="operation-card">
                             <span class="operation-status status-planned">Planifiée</span>
                             <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
-                                testTransport de marchandises - Route maritime
-                            </p>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">testTransport de marchandises - Route maritime</p>
                             <div class="operation-details">
-                                <div class="operation-detail">
-                                    <strong>Date:</strong> 20 Février 2026
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Heure:</strong> 03:00
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Équipe:</strong> 4 membres
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Gain estimé:</strong> $850K
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Leader:</strong> Ghost
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Risque:</strong> Moyen
-                                </div>
+                                <div class="operation-detail"><strong>Date:</strong> 20 Février 2026</div>
+                                <div class="operation-detail"><strong>Heure:</strong> 03:00</div>
+                                <div class="operation-detail"><strong>Équipe:</strong> 4 membres</div>
+                                <div class="operation-detail"><strong>Gain estimé:</strong> $850K</div>
+                                <div class="operation-detail"><strong>Leader:</strong> Ghost</div>
+                                <div class="operation-detail"><strong>Risque:</strong> Moyen</div>
                             </div>
                         </div>
 
                         <div class="operation-card">
                             <span class="operation-status status-completed">Complétée</span>
                             <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
-                                test
-                            </p>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">test</p>
                             <div class="operation-details">
-                                <div class="operation-detail">
-                                    <strong>Date:</strong> 10 Février 2026
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Heure:</strong> 21:30
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Équipe:</strong> 8 membres
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Gain réel:</strong> $1.2M
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Leader:</strong> Viper
-                                </div>
-                                <div class="operation-detail">
-                                    <strong>Statut:</strong> Succès
-                                </div>
+                                <div class="operation-detail"><strong>Date:</strong> 10 Février 2026</div>
+                                <div class="operation-detail"><strong>Heure:</strong> 21:30</div>
+                                <div class="operation-detail"><strong>Équipe:</strong> 8 membres</div>
+                                <div class="operation-detail"><strong>Gain réel:</strong> $1.2M</div>
+                                <div class="operation-detail"><strong>Leader:</strong> Viper</div>
+                                <div class="operation-detail"><strong>Statut:</strong> Succès</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ID CARD SECTION -->
                     <div class="content-section" id="id-card">
                         <h2 class="section-header">Carte d'Identité</h2>
-
                         <div class="id-card">
-                            <div class="id-header">
-                                <h3>SYNDICATE - ID MEMBRE</h3>
-                            </div>
-
+                            <div class="id-header"><h3>orga - ID MEMBRE</h3></div>
                             <div class="id-content">
-                                <div class="id-field">
-                                    <label>Nom de Code</label>
-                                    <div class="value">ALEX SHADOW</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Numéro ID</label>
-                                    <div class="value">#001596</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Rang</label>
-                                    <div class="value">Chef</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Spécialité</label>
-                                    <div class="value">Stratégie</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Date d'Entrée</label>
-                                    <div class="value">15 Jan 2021</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Statut</label>
-                                    <div class="value" style="color: var(--primary-red);">Actif</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Opérations Menées</label>
-                                    <div class="value">89</div>
-                                </div>
-
-                                <div class="id-field">
-                                    <label>Taux de Réussite</label>
-                                    <div class="value">96%</div>
-                                </div>
-
-                                <div class="id-photo">
-                                    <div class="photo-placeholder">
-                                        👤
-                                    </div>
-                                </div>
+                                <div class="id-field"><label>Nom de Code</label><div class="value">ALEX SHADOW</div></div>
+                                <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
+                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
+                                <div class="id-field"><label>Date d'Entrée</label><div class="value">15 fev 2026</div></div>
+                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
+                                <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
+                                <div class="id-photo"><div class="photo-placeholder">👤</div></div>
                             </div>
                         </div>
                     </div>
@@ -669,24 +256,27 @@
     </div>
 
     <script>
-        // Sidebar navigation
+        function checkLogin() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if((u === "alex_shadow" && p === "1596") || (u === "user" && p === "1234")) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
         const sidebarItems = document.querySelectorAll('.sidebar-item');
         const contentSections = document.querySelectorAll('.content-section');
-
         sidebarItems.forEach(item => {
             item.addEventListener('click', () => {
-                // Remove active class from all items
                 sidebarItems.forEach(i => i.classList.remove('active'));
                 contentSections.forEach(s => s.classList.remove('active'));
-
-                // Add active class to clicked item
                 item.classList.add('active');
-
-                // Show corresponding section
-                const sectionId = item.getAttribute('data-section');
-                document.getElementById(sectionId).classList.add('active');
+                document.getElementById(item.getAttribute('data-section')).classList.add('active');
             });
         });
     </script>
 </body>
-</html> 
+</html>
