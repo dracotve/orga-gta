@@ -9,75 +9,124 @@
 :root{--primary-red:#dc2626;--primary-gold:#f59e0b;--dark-1:#0f0f0f;--dark-2:#1a1a1a;--dark-3:#2a2a2a;--accent-white:#f5f5f5;--text-muted:#9ca3af}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Saira Condensed',sans-serif;background:var(--dark-1);color:var(--accent-white);overflow-x:hidden}
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(220,38,38,.03) 10px,rgba(220,38,38,.03) 20px);pointer-events:none;z-index:0}
 
-/* LOGIN OVERLAY */
-.login-screen{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:9999}
-.login-box{background:var(--dark-2);border:4px solid var(--primary-red);padding:50px;min-width:360px;clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,30px 100%,0 calc(100% - 30px))}
-.login-title{font-family:'Bebas Neue';font-size:2.4rem;color:var(--primary-red);letter-spacing:4px;text-shadow:2px 2px 0 var(--primary-gold);text-align:center;margin-bottom:25px}
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:9999;animation:fadeIn .5s}
+.login-box{background:var(--dark-2);border:4px solid var(--primary-red);padding:50px;min-width:360px;animation:scaleIn .4s}
+.login-title{font-family:'Bebas Neue';font-size:2.4rem;color:var(--primary-red);letter-spacing:4px;text-align:center;margin-bottom:25px}
 .login-box input{width:100%;padding:14px;margin:10px 0;background:var(--dark-3);border:2px solid var(--dark-3);color:white;font-size:1.1rem}
-.login-box input:focus{outline:none;border-color:var(--primary-red)}
-.login-box button{width:100%;padding:14px;margin-top:15px;background:var(--primary-red);border:none;color:white;font-weight:700;letter-spacing:2px;cursor:pointer}
-.login-error{color:#ff6b6b;margin-top:10px;text-align:center;display:none}
+.login-box button{width:100%;padding:14px;margin-top:15px;background:var(--primary-red);border:none;color:white;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s}
+.login-box button:hover{background:#ef4444}
 .hidden{display:none}
 
-.container{position:relative;z-index:1}
-.dashboard{min-height:100vh}
-.dashboard-header{background:var(--dark-2);border-bottom:4px solid var(--primary-red);padding:25px 50px;display:flex;justify-content:space-between;align-items:center;position:relative}
-.dashboard-header::after{content:'';position:absolute;bottom:-4px;right:0;width:200px;height:4px;background:var(--primary-gold)}
-.dashboard-logo h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--primary-red);letter-spacing:4px;text-shadow:3px 3px 0 var(--primary-gold)}
-.dashboard-main{display:flex;min-height:calc(100vh - 100px)}
-.sidebar{width:300px;background:var(--dark-2);border-right:3px solid var(--dark-3);padding:40px 0}
-.sidebar-item{padding:20px 40px;font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:.3s;border-left:4px solid transparent;position:relative}
-.sidebar-item:hover{background:rgba(220,38,38,.1);border-left-color:var(--primary-red)}
+/* LAYOUT */
+.dashboard-main{display:flex;min-height:100vh}
+.sidebar{width:300px;background:var(--dark-2);padding:40px 0}
+.sidebar-item{padding:20px 40px;font-size:1.2rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;cursor:pointer;border-left:4px solid transparent;transition:.25s}
+.sidebar-item:hover{background:#222}
 .sidebar-item.active{background:rgba(220,38,38,.2);border-left-color:var(--primary-red);color:var(--primary-gold)}
-.sidebar-item.active::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);border-top:15px solid transparent;border-bottom:15px solid transparent;border-right:15px solid var(--dark-1)}
-.content-area{flex:1;padding:50px;background:var(--dark-1)}
-.content-section{display:none;animation:fadeInContent .5s ease}
+.content-area{flex:1;padding:40px;animation:fadeIn .4s}
+.content-section{display:none;animation:fadeIn .4s}
 .content-section.active{display:block}
-@keyframes fadeInContent{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-.section-header{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--primary-red);letter-spacing:4px;margin-bottom:40px;text-shadow:3px 3px 0 var(--primary-gold);position:relative;padding-bottom:20px}
-.section-header::after{content:'';position:absolute;bottom:0;left:0;width:150px;height:4px;background:linear-gradient(90deg,var(--primary-red),var(--primary-gold))}
+.section-header{font-family:'Bebas Neue';font-size:3rem;color:var(--primary-red);margin-bottom:20px}
+
+/* CARDS */
+.card{background:var(--dark-2);padding:20px;margin:15px 0;border-left:4px solid var(--primary-gold);display:flex;gap:20px;align-items:center;transition:.25s}
+.card:hover{transform:translateX(8px) scale(1.02);background:#202020}
+.photo{width:90px;height:90px;background:#000;border:2px solid var(--primary-red);background-size:cover;background-position:center}
+.log{background:#111;padding:10px;margin:8px 0;border-left:3px solid var(--primary-red);animation:fadeIn .4s}
+
+/* TOP BAR */
+.topbar{display:flex;justify-content:flex-end;margin-bottom:20px}
+.logout{background:#991b1b;border:none;color:white;padding:10px 18px;font-weight:700;cursor:pointer;letter-spacing:2px;transition:.2s}
+.logout:hover{background:#dc2626}
+
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.shake{animation:shake .3s}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9998;animation:fadeIn .25s}
+.modal.active{display:flex}
+.modal-card{background:var(--dark-2);border:4px solid var(--primary-red);padding:30px;min-width:420px;max-width:600px;animation:scaleIn .25s}
+.modal-card .photo{width:140px;height:140px;margin-bottom:15px}
+.closeBtn{margin-top:15px;background:var(--primary-red);border:none;padding:10px 18px;color:white;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
-
 <div class="login-screen" id="loginScreen">
- <div class="login-box">
-  <div class="login-title">SYNDICATE ACCESS</div>
+ <div class="login-box" id="loginBox">
+  <div class="login-title">🔐 SYNDICATE ACCESS</div>
   <input id="username" placeholder="Nom de code">
   <input id="password" type="password" placeholder="Mot de passe">
-  <button onclick="login()">Connexion</button>
-  <div class="login-error" id="loginError">Accès refusé</div>
+  <button onclick="login()">Connexion 🚪</button>
+  <div id="loginError" style="color:red;text-align:center;margin-top:10px;display:none">Accès refusé</div>
  </div>
 </div>
 
 <div id="app" class="hidden">
-<div class="container">
-<div class="dashboard">
-<div class="dashboard-header"><div class="dashboard-logo"><h2>SYNDICATE</h2></div></div>
 <div class="dashboard-main">
 <div class="sidebar">
 <div class="sidebar-item active" data-section="information">📊 Information</div>
-<div class="sidebar-item" data-section="planning">🎯 Planning des Op</div>
-<div class="sidebar-item" data-section="id-card">🪪 Carte d'Identité</div>
+<div class="sidebar-item" data-section="planning">🎯 Opérations</div>
+<div class="sidebar-item" data-section="cards">🪪 Cartes</div>
 </div>
 <div class="content-area">
-<div class="content-section active" id="information"><h2 class="section-header">Information Générale</h2><p>Accès autorisé.</p></div>
-<div class="content-section" id="planning"><h2 class="section-header">Planning des Opérations</h2></div>
-<div class="content-section" id="id-card"><h2 class="section-header">Carte d'Identité</h2></div>
-</div></div></div></div>
+<div class="topbar"><button class="logout" onclick="logout()">Déconnexion 🔓</button></div>
+<div class="content-section active" id="information">
+<h2 class="section-header">Information</h2>
+<p>Le site est prêt ✅</p>
+<div id="logs"></div>
+</div>
+<div class="content-section" id="planning">
+<h2 class="section-header">Opérations</h2>
+<div class="card"><div>Op test — entraînement interne 🧪</div></div>
+</div>
+<div class="content-section" id="cards">
+<h2 class="section-header">Cartes d'identité</h2>
+<div id="cardsContainer"></div>
+</div>
+</div>
+</div>
 </div>
 
 <script>
-const users=[{user:'alex_shadow',pass:'1596'}];
-function login(){const u=username.value.toLowerCase();const p=password.value;const ok=users.find(a=>a.user===u&&a.pass===p);if(ok){loginScreen.style.display='none';app.classList.remove('hidden');localStorage.setItem('syndicateAuth','1')}else loginError.style.display='block'}
-if(localStorage.getItem('syndicateAuth')==='1'){loginScreen.style.display='none';app.classList.remove('hidden')}
+const accounts=[
+{user:'alex_shadow',pass:'1596',role:'admin',trust:'Élevé',cars:'Sultan RS, Kuruma',weapons:'Carbine Rifle, Pistol',img:'https://i.imgur.com/0y0y0y0.png'},
+{user:'test',pass:'test',role:'member',trust:'Faible',cars:'Blista',weapons:'Knife',img:'https://i.imgur.com/0y0y0y0.png'}
+];
+let current=null;
 
-const sidebarItems=document.querySelectorAll('.sidebar-item');
-const contentSections=document.querySelectorAll('.content-section');
-sidebarItems.forEach(item=>{item.addEventListener('click',()=>{sidebarItems.forEach(i=>i.classList.remove('active'));contentSections.forEach(s=>s.classList.remove('active'));item.classList.add('active');document.getElementById(item.dataset.section).classList.add('active')})});
+function addLog(text){const l=document.createElement('div');l.className='log';l.textContent=text;logs.appendChild(l)}
+
+function login(){const u=username.value.toLowerCase();const p=password.value;const acc=accounts.find(a=>a.user===u&&a.pass===p);if(acc){current=acc;loginScreen.style.display='none';app.classList.remove('hidden');localStorage.setItem('syndicateUser',u);renderCards();renderLogs()}else{loginError.style.display='block';loginBox.classList.remove('shake');void loginBox.offsetWidth;loginBox.classList.add('shake')}}
+
+function logout(){localStorage.removeItem('syndicateUser');location.reload()}
+
+function renderLogs(){logs.innerHTML='';if(current.role==='admin'){accounts.forEach(a=>addLog('📂 Consultation fiche: '+a.user))}else addLog('👤 Consultation de votre fiche personnelle')}
+
+function renderCards(){cardsContainer.innerHTML='';accounts.forEach(a=>{if(current.role==='admin'||a.user===current.user){const c=document.createElement('div');c.className='card';c.innerHTML=`<div class='photo' style='background-image:url(${a.img})'></div><div><b>👤 Compte:</b> ${a.user}<br><b>🛡️ Niveau de confiance:</b> ${a.trust}<br><b>🚗 Voiture:</b> En cours d'examination<br><b>🔫 Armes:</b> En cours d'examination</div>`;c.onclick=()=>openCard(a);cardsContainer.appendChild(c)}})}
+
+const saved=localStorage.getItem('syndicateUser');
+if(saved){const acc=accounts.find(a=>a.user===saved);if(acc){current=acc;loginScreen.style.display='none';app.classList.remove('hidden');renderCards();renderLogs()}}
+
+document.querySelectorAll('.sidebar-item').forEach(item=>item.onclick=()=>{document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));item.classList.add('active');document.getElementById(item.dataset.section).classList.add('active')});
+
+function openCard(a){modal.classList.add('active');modalContent.innerHTML=`<div class='modal-card'>
+<div class='photo' style='background-image:url(${a.img})'></div>
+<div><b>👤 Compte:</b> ${a.user}</div>
+<div><b>🎖️ Rôle:</b> ${a.role}</div>
+<div><b>🛡️ Niveau de confiance:</b> ${a.trust}</div>
+<div><b>🚗 Voiture:</b> ${a.cars}</div>
+<div><b>🔫 Armes:</b> ${a.weapons}</div>
+<button class='closeBtn' onclick='closeCard()'>Fermer ❌</button>
+</div>`}
+function closeCard(){modal.classList.remove('active')}
 </script>
+<div id="modal" class="modal"><div id="modalContent"></div></div>
 </body>
 </html>
+
 
