@@ -1,134 +1,692 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shadow Syndicate - Organisation GTA</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Saira+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--primary-red:#dc2626;--primary-gold:#f59e0b;--dark-1:#0f0f0f;--dark-2:#1a1a1a;--dark-3:#2a2a2a;--accent-white:#f5f5f5;--text-muted:#9ca3af}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Saira Condensed',sans-serif;background:var(--dark-1);color:var(--accent-white);overflow-x:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Syndicate - Organisation GTA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Saira+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --primary-gold: #f59e0b;
+            --dark-1: #0f0f0f;
+            --dark-2: #1a1a1a;
+            --dark-3: #2a2a2a;
+            --accent-white: #f5f5f5;
+            --text-muted: #9ca3af;
+        }
 
-/* LOGIN */
-.login-screen{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:9999;animation:fadeIn .5s}
-.login-box{background:var(--dark-2);border:4px solid var(--primary-red);padding:50px;min-width:360px;animation:scaleIn .4s}
-.login-title{font-family:'Bebas Neue';font-size:2.4rem;color:var(--primary-red);letter-spacing:4px;text-align:center;margin-bottom:25px}
-.login-box input{width:100%;padding:14px;margin:10px 0;background:var(--dark-3);border:2px solid var(--dark-3);color:white;font-size:1.1rem}
-.login-box button{width:100%;padding:14px;margin-top:15px;background:var(--primary-red);border:none;color:white;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s}
-.login-box button:hover{background:#ef4444}
-.hidden{display:none}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* LAYOUT */
-.dashboard-main{display:flex;min-height:100vh}
-.sidebar{width:300px;background:var(--dark-2);padding:40px 0}
-.sidebar-item{padding:20px 40px;font-size:1.2rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;cursor:pointer;border-left:4px solid transparent;transition:.25s}
-.sidebar-item:hover{background:#222}
-.sidebar-item.active{background:rgba(220,38,38,.2);border-left-color:var(--primary-red);color:var(--primary-gold)}
-.content-area{flex:1;padding:40px;animation:fadeIn .4s}
-.content-section{display:none;animation:fadeIn .4s}
-.content-section.active{display:block}
-.section-header{font-family:'Bebas Neue';font-size:3rem;color:var(--primary-red);margin-bottom:20px}
+        body {
+            font-family: 'Saira Condensed', sans-serif;
+            background: var(--dark-1);
+            color: var(--accent-white);
+            overflow-x: hidden;
+        }
 
-/* CARDS */
-.card{background:var(--dark-2);padding:20px;margin:15px 0;border-left:4px solid var(--primary-gold);display:flex;gap:20px;align-items:center;transition:.25s;cursor:pointer}
-.card:hover{transform:translateX(8px) scale(1.02);background:#202020}
-.card .status-box{padding:4px 10px;font-size:0.9rem;font-weight:700;border-radius:4px;margin-left:auto;text-transform:uppercase}
-.status-active{background:#dc2626;color:white}
-.status-planned{background:#f59e0b;color:#0f0f0f}
-.status-cancelled{background:#555;color:white}
-.photo{width:90px;height:90px;background:#000;border:2px solid var(--primary-red);background-size:cover;background-position:center}
-.log{background:#111;padding:10px;margin:8px 0;border-left:3px solid var(--primary-red);animation:fadeIn .4s}
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(220, 38, 38, 0.03) 10px,
+                    rgba(220, 38, 38, 0.03) 20px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
 
-/* TOP BAR */
-.topbar{display:flex;justify-content:flex-end;margin-bottom:20px}
-.logout{background:#991b1b;border:none;color:white;padding:10px 18px;font-weight:700;cursor:pointer;letter-spacing:2px;transition:.2s}
-.logout:hover{background:#dc2626}
+        .container {
+            position: relative;
+            z-index: 1;
+        }
 
-/* ANIMATIONS */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes scaleIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-.shake{animation:shake .3s}
-@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+        .dashboard {
+            min-height: 100vh;
+        }
 
-/* MODAL */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9998;animation:fadeIn .25s}
-.modal.active{display:flex}
-.modal-card{background:var(--dark-2);border:4px solid var(--primary-red);padding:30px;min-width:420px;max-width:600px;animation:scaleIn .25s}
-.modal-card .photo{width:140px;height:140px;margin-bottom:15px}
-.closeBtn{margin-top:15px;background:var(--primary-red);border:none;padding:10px 18px;color:white;font-weight:700;cursor:pointer}
-</style>
+        .dashboard-header {
+            background: var(--dark-2);
+            border-bottom: 4px solid var(--primary-red);
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .dashboard-header::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 200px;
+            height: 4px;
+            background: var(--primary-gold);
+        }
+
+        .dashboard-logo h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 0 var(--primary-gold);
+        }
+
+        .dashboard-main {
+            display: flex;
+            min-height: calc(100vh - 100px);
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--dark-2);
+            border-right: 3px solid var(--dark-3);
+            padding: 40px 0;
+        }
+
+        .sidebar-item {
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(220, 38, 38, 0.1);
+            border-left-color: var(--primary-red);
+        }
+
+        .sidebar-item.active {
+            background: rgba(220, 38, 38, 0.2);
+            border-left-color: var(--primary-red);
+            color: var(--primary-gold);
+        }
+
+        .sidebar-item.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid var(--dark-1);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 50px;
+            background: var(--dark-1);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeInContent 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section-header {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--primary-red);
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 0 var(--primary-gold);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-red), var(--primary-gold));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--dark-2);
+            border: 3px solid var(--dark-3);
+            padding: 35px;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gold);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--primary-red);
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 var(--primary-gold);
+        }
+
+        .info-panel {
+            background: var(--dark-2);
+            border: 3px solid var(--dark-3);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .info-panel h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-gold);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .info-panel p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .operation-card {
+            background: var(--dark-2);
+            border-left: 5px solid var(--primary-red);
+            padding: 30px;
+            margin-bottom: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .operation-card:hover {
+            background: var(--dark-3);
+            transform: translateX(10px);
+        }
+
+        .operation-status {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+        }
+
+        .status-active {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .status-planned {
+            background: var(--primary-gold);
+            color: var(--dark-1);
+        }
+
+        .status-completed {
+            background: var(--dark-3);
+            color: var(--text-muted);
+        }
+
+        .operation-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .operation-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .operation-detail {
+            font-size: 1rem;
+        }
+
+        .operation-detail strong {
+            color: var(--primary-red);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .id-card {
+            max-width: 800px;
+            background: var(--dark-2);
+            border: 4px solid var(--primary-red);
+            padding: 50px;
+            position: relative;
+            clip-path: polygon(
+                0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 
+                40px 100%, 0 calc(100% - 40px)
+            );
+        }
+
+        .id-card::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gold);
+            clip-path: polygon(100% 0, 100% 100%, 0 0);
+        }
+
+        .id-card::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: -4px;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gold);
+            clip-path: polygon(0 100%, 100% 100%, 0 0);
+        }
+
+        .id-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--dark-3);
+        }
+
+        .id-header h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 var(--primary-gold);
+        }
+
+        .id-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .id-field {
+            margin-bottom: 25px;
+        }
+
+        .id-field label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .id-field .value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+        }
+
+        .id-photo {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 3px solid var(--dark-3);
+        }
+
+        .photo-placeholder {
+            width: 200px;
+            height: 200px;
+            background: var(--dark-3);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary-red);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-main {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 3px solid var(--dark-3);
+                padding: 20px 0;
+            }
+
+            .content-area {
+                padding: 30px 20px;
+            }
+
+            .id-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 20px;
+            }
+
+            .section-header {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="login-screen" id="loginScreen">
- <div class="login-box" id="loginBox">
-  <div class="login-title">🔐 SYNDICATE ACCESS</div>
-  <input id="username" placeholder="Nom de code">
-  <input id="password" type="password" placeholder="Mot de passe">
-  <button onclick="login()">Connexion 🚪</button>
-  <div id="loginError" style="color:red;text-align:center;margin-top:10px;display:none">Accès refusé</div>
- </div>
-</div>
+    <div class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-logo">
+                    <h2>SYNDICATE</h2>
+                </div>
+            </div>
 
-<div id="app" class="hidden">
-<div class="dashboard-main">
-<div class="sidebar">
-<div class="sidebar-item active" data-section="information">📊 Information</div>
-<div class="sidebar-item" data-section="planning">🎯 Opérations</div>
-<div class="sidebar-item" data-section="cards">🪪 Cartes</div>
-</div>
-<div class="content-area">
-<div class="topbar"><button class="logout" onclick="logout()">Déconnexion 🔓</button></div>
-<div class="content-section active" id="information">
-<h2 class="section-header">Information</h2>
-<p>Le site est prêt ✅</p>
-<div id="logs"></div>
-</div>
-<div class="content-section" id="planning">
-<h2 class="section-header">Opérations</h2>
-<div class="card"><div>Op test — entraînement interne 🧪</div><div class="status-box status-active">En cours</div></div>
-</div>
-<div class="content-section" id="cards">
-<h2 class="section-header">Cartes d'identité</h2>
-<div id="cardsContainer"></div>
-</div>
-</div>
-</div>
-</div>
+            <div class="dashboard-main">
+                <div class="sidebar">
+                    <div class="sidebar-item active" data-section="information">
+                        📊 Information
+                    </div>
+                    <div class="sidebar-item" data-section="planning">
+                        🎯 Planning des Op
+                    </div>
+                    <div class="sidebar-item" data-section="id-card">
+                        🪪 Carte d'Identité
+                    </div>
+                </div>
 
-<script>
-const accounts=[
-{user:'alex_shadow',pass:'1596',role:'admin',trust:'Élevé',cars:'Sultan RS, Kuruma',weapons:'Carbine Rifle, Pistol',img:'https://i.imgur.com/0y0y0y0.png'},
-{user:'test',pass:'test',role:'member',trust:'Faible',cars:'Blista',weapons:'Knife',img:'https://i.imgur.com/0y0y0y0.png'}
-];
-let current=null;
+                <div class="content-area">
+                    <!-- INFORMATION SECTION -->
+                    <div class="content-section active" id="information">
+                        <h2 class="section-header">Information Générale</h2>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">Membres Actifs</div>
+                                <div class="stat-value">en cour de calcule</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Opérations Totales</div>
+                                <div class="stat-value">en cour de calcule</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Gains Totaux</div>
+                                <div class="stat-value">$calclule</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Niveau Org</div>
+                                <div class="stat-value">calcul</div>
+                            </div>
+                        </div>
 
-function addLog(text){const l=document.createElement('div');l.className='log';l.textContent=text;logs.appendChild(l)}
+                        <div class="info-panel">
+                            <h3>À Propos de l'Organisation</h3>
+                            <p>
+                    en cour d'écriture
+                            </p>
+                        </div>
 
-function login(){const u=username.value.toLowerCase();const p=password.value;const acc=accounts.find(a=>a.user===u&&a.pass===p);if(acc){current=acc;loginScreen.style.display='none';app.classList.remove('hidden');localStorage.setItem('syndicateUser',u);renderCards();renderLogs()}else{loginError.style.display='block';loginBox.classList.remove('shake');void loginBox.offsetWidth;loginBox.classList.add('shake')}}
+                        <div class="info-panel">
+                            <h3>Territoires Contrôlés</h3>
+                            <p>
+                                villa
+                            </p>
+                        </div>
 
-function logout(){localStorage.removeItem('syndicateUser');location.reload()}
+                        <div class="info-panel">
+                            <h3>Dernière Mise à Jour</h3>
+                            <p>
+                                Système mis à jour le 12 Février 2026 - Nouvelles fonctionnalités de planification ajoutées
+                            </p>
+                        </div>
+                    </div>
 
-function renderLogs(){logs.innerHTML='';if(current.role==='admin'){accounts.forEach(a=>addLog('📂 Consultation fiche: '+a.user))}else addLog('👤 Consultation de votre fiche personnelle')}
+                    <!-- PLANNING SECTION -->
+                    <div class="content-section" id="planning">
+                        <h2 class="section-header">Planning des Opérations</h2>
 
-function renderCards(){cardsContainer.innerHTML='';accounts.forEach(a=>{if(current.role==='admin'||a.user===current.user){const c=document.createElement('div');c.className='card';c.innerHTML=`<div class='photo' style='background-image:url(${a.img})'></div><div><b>👤 Compte:</b> ${a.user}<br><b>🛡️ Niveau de confiance:</b> ${a.trust}<br><b>🚗 Voiture:</b> En cours d'examination<br><b>🔫 Armes:</b> En cours d'examination</div>`;c.onclick=()=>openCard(a);cardsContainer.appendChild(c)}})}
+                        <div class="operation-card">
+                            <span class="operation-status status-active">En Cours</span>
+                            <h3 class="operation-title">Opération "test"</h3>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
+                                test
+                            </p>
+                            <div class="operation-details">
+                                <div class="operation-detail">
+                                    <strong>Date:</strong> 15 Février 2026
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Heure:</strong> 22:00
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Équipe:</strong> 6 membres
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Gain estimé:</strong> $2.1M
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Leader:</strong> Alex Shadow
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Risque:</strong> Élevé
+                                </div>
+                            </div>
+                        </div>
 
-const saved=localStorage.getItem('syndicateUser');
-if(saved){const acc=accounts.find(a=>a.user===saved);if(acc){current=acc;loginScreen.style.display='none';app.classList.remove('hidden');renderCards();renderLogs()}}
+                        <div class="operation-card">
+                            <span class="operation-status status-planned">Planifiée</span>
+                            <h3 class="operation-title">Opération "test"</h3>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
+                                testTransport de marchandises - Route maritime
+                            </p>
+                            <div class="operation-details">
+                                <div class="operation-detail">
+                                    <strong>Date:</strong> 20 Février 2026
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Heure:</strong> 03:00
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Équipe:</strong> 4 membres
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Gain estimé:</strong> $850K
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Leader:</strong> Ghost
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Risque:</strong> Moyen
+                                </div>
+                            </div>
+                        </div>
 
-document.querySelectorAll('.sidebar-item').forEach(item=>item.onclick=()=>{document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));item.classList.add('active');document.getElementById(item.dataset.section).classList.add('active')});
+                        <div class="operation-card">
+                            <span class="operation-status status-completed">Complétée</span>
+                            <h3 class="operation-title">Opération "test"</h3>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">
+                                test
+                            </p>
+                            <div class="operation-details">
+                                <div class="operation-detail">
+                                    <strong>Date:</strong> 10 Février 2026
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Heure:</strong> 21:30
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Équipe:</strong> 8 membres
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Gain réel:</strong> $1.2M
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Leader:</strong> Viper
+                                </div>
+                                <div class="operation-detail">
+                                    <strong>Statut:</strong> Succès
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-function openCard(a){modal.classList.add('active');modalContent.innerHTML=`<div class='modal-card'>
-<div class='photo' style='background-image:url(${a.img})'></div>
-<div><b>👤 Compte:</b> ${a.user}</div>
-<div><b>🎖️ Rôle:</b> ${a.role}</div>
-<div><b>🛡️ Niveau de confiance:</b> ${a.trust}</div>
-<div><b>🚗 Voiture:</b> ${a.cars}</div>
-<div><b>🔫 Armes:</b> ${a.weapons}</div>
-<button class='closeBtn' onclick='closeCard()'>Fermer ❌</button>
-</div>`}
-function closeCard(){modal.classList.remove('active')}
-</script>
-<div id="modal" class="modal"><div id="modalContent"></div></div>
+                    <!-- ID CARD SECTION -->
+                    <div class="content-section" id="id-card">
+                        <h2 class="section-header">Carte d'Identité</h2>
+
+                        <div class="id-card">
+                            <div class="id-header">
+                                <h3>SYNDICATE - ID MEMBRE</h3>
+                            </div>
+
+                            <div class="id-content">
+                                <div class="id-field">
+                                    <label>Nom de Code</label>
+                                    <div class="value">ALEX SHADOW</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Numéro ID</label>
+                                    <div class="value">#001596</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Rang</label>
+                                    <div class="value">Chef</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Spécialité</label>
+                                    <div class="value">Stratégie</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Date d'Entrée</label>
+                                    <div class="value">15 Jan 2021</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Statut</label>
+                                    <div class="value" style="color: var(--primary-red);">Actif</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Opérations Menées</label>
+                                    <div class="value">89</div>
+                                </div>
+
+                                <div class="id-field">
+                                    <label>Taux de Réussite</label>
+                                    <div class="value">96%</div>
+                                </div>
+
+                                <div class="id-photo">
+                                    <div class="photo-placeholder">
+                                        👤
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar navigation
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active class from all items
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+
+                // Add active class to clicked item
+                item.classList.add('active');
+
+                // Show corresponding section
+                const sectionId = item.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+    </script>
 </body>
-</html>
+</html> 
