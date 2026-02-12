@@ -31,8 +31,12 @@ body{font-family:'Saira Condensed',sans-serif;background:var(--dark-1);color:var
 .section-header{font-family:'Bebas Neue';font-size:3rem;color:var(--primary-red);margin-bottom:20px}
 
 /* CARDS */
-.card{background:var(--dark-2);padding:20px;margin:15px 0;border-left:4px solid var(--primary-gold);display:flex;gap:20px;align-items:center;transition:.25s}
+.card{background:var(--dark-2);padding:20px;margin:15px 0;border-left:4px solid var(--primary-gold);display:flex;gap:20px;align-items:center;transition:.25s;cursor:pointer}
 .card:hover{transform:translateX(8px) scale(1.02);background:#202020}
+.card .status-box{padding:4px 10px;font-size:0.9rem;font-weight:700;border-radius:4px;margin-left:auto;text-transform:uppercase}
+.status-active{background:#dc2626;color:white}
+.status-planned{background:#f59e0b;color:#0f0f0f}
+.status-cancelled{background:#555;color:white}
 .photo{width:90px;height:90px;background:#000;border:2px solid var(--primary-red);background-size:cover;background-position:center}
 .log{background:#111;padding:10px;margin:8px 0;border-left:3px solid var(--primary-red);animation:fadeIn .4s}
 
@@ -82,7 +86,7 @@ body{font-family:'Saira Condensed',sans-serif;background:var(--dark-1);color:var
 </div>
 <div class="content-section" id="planning">
 <h2 class="section-header">Opérations</h2>
-<div class="card"><div>Op test — entraînement interne 🧪</div></div>
+<div class="card"><div>Op test — entraînement interne 🧪</div><div class="status-box status-active">En cours</div></div>
 </div>
 <div class="content-section" id="cards">
 <h2 class="section-header">Cartes d'identité</h2>
@@ -128,5 +132,3 @@ function closeCard(){modal.classList.remove('active')}
 <div id="modal" class="modal"><div id="modalContent"></div></div>
 </body>
 </html>
-
-
