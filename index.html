@@ -83,6 +83,16 @@
             display: none;
         }
 
+.photo-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid var(--dark-3);
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+}
+
         /* --- STYLE DASHBOARD --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Saira Condensed', sans-serif; background: var(--dark-1); color: var(--accent-white); overflow-x: hidden; }
@@ -233,12 +243,13 @@
                         </div>
                     </div>
 
+                    
                     <div class="content-section" id="id-card">
                         <h2 class="section-header">Carte d'Identité</h2>
                         <div class="id-card">
                             <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
                             <div class="id-content">
-                                <div class="id-field"><label>Nom de Code</label><div class="value">ALEX SHADOW</div></div>
+                                <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
                                 <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
                                 <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
                                 <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
@@ -246,7 +257,24 @@
                                 <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
                                 <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
                                 <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
-                                <div class="id-photo"><div class="photo-placeholder">👤</div></div>
+                               <div class="id-photo">
+    <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
+</div>
+
+                            </div>
+
+                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                            <div class="id-content">
+                                <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
+                                <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
+                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                <div class="id-field"><label>Spécialité</label><div class="value">stratégie</div></div>
+                                <div class="id-field"><label>Date d'Entrée</label><div class="value">03 fev 2026</div></div>
+                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                <div class="id-field"><label>Opérations Menées</label><div class="value">2</div></div>
+                                <div class="id-field"><label>Taux de Réussite</label><div class="value">100%</div></div>
+                                <div class="id-photo">
+    <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
                             </div>
                         </div>
                     </div>
@@ -259,7 +287,7 @@
         function checkLogin() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
-            if((u === "alex_shadow" && p === "1596") || (u === "user" && p === "1234")) {
+            if((u === "alex_shadow" && p === "1596") || (u === "user" && p === "1234") || (u === "jonh_mendes" && p === "0307")) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
             } else {
