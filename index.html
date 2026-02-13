@@ -93,6 +93,45 @@
             clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
         }
 
+        /* --- BARRE DE RECHERCHE --- */
+        .search-bar {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 18px 25px;
+            background: var(--dark-2);
+            border: 3px solid var(--dark-3);
+            color: var(--accent-white);
+            font-family: 'Saira Condensed', sans-serif;
+            font-size: 1.3rem;
+            outline: none;
+            transition: border-color 0.3s;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary-red);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            pointer-events: none;
+        }
+
         /* --- GRILLE POUR FICHES ABSENCE --- */
         .absence-grid {
             display: grid;
@@ -142,6 +181,15 @@
         .id-field label { display: block; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
         .id-field .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--primary-gold); }
         .photo-placeholder { width: 200px; height: 200px; background: var(--dark-3); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-red); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 3px;
+        }
     </style>
 </head>
 <body>
@@ -203,7 +251,7 @@
                         </div>
                         <div class="info-panel">
                             <h3>Dernière Mise à Jour</h3>
-                            <p>Système mis à jour le 12 Février 2026 - Nouvelles fonctionnalités de planification ajoutées</p>
+                            <p>Système mis à jour le 13 Février 2026</p>
                         </div>
                     </div>
 
@@ -258,60 +306,94 @@
                     <div class="content-section" id="id-card">
                         <h2 class="section-header">Carte d'Identité</h2>
                         
-                        <div class="id-card">
-                            <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                            <div class="id-content">
-                                <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
-                                <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
-                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
-                                <div class="id-field"><label>Date d'Entrée</label><div class="value">8 fev 2026</div></div>
-                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
-                                <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
-                                <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                <div class="id-photo">
-                                    <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
+                        <!-- BARRE DE RECHERCHE -->
+                        <div class="search-bar">
+                            <input type="text" id="searchInput" placeholder="🔍 Rechercher par Numéro ID (ex: #001)" onkeyup="searchByID()">
+                            <span class="search-icon">🔍</span>
+                        </div>
+
+                        <div id="id-cards-container">
+                            <!-- CARTE 1 -->
+                            <div class="id-card" data-id="001">
+                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
+                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                    <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
+                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">8 fev 2026</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
+                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
+                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
+                                    </div>
                                 </div>
+                            </div>
+
+                            <!-- CARTE 2 -->
+                            <div class="id-card" data-id="002">
+                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
+                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                    <div class="id-field"><label>Spécialité</label><div class="value">stratégie</div></div>
+                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">03 fev 2026</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                    <div class="id-field"><label>Opérations Menées</label><div class="value">2</div></div>
+                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">100%</div></div>
+                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CARTE 3 -->
+                            <div class="id-card" data-id="003">
+                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Sowane Turie</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#003</div></div>
+                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                    <div class="id-field"><label>Spécialité</label><div class="value">Tir</div></div>
+                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">13 fev 2026</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
+                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
+                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/F62eAf2.jpeg" class="photo-img">
+                                    </div>
+                                </div>
+                            
+                             <!-- CARTE 4 -->
+                            <div class="id-card" data-id="00">
+                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Mathilde</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#004</div></div>
+                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                    <div class="id-field"><label>Spécialité</label><div class="value">conduite</div></div>
+                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">13 fev 2026</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
+                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">null%</div></div>
+                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/rInAM0Y.jpeg" class="photo-img">
+                                    </div>
+                                </div>
+                            </div>                                                                         
                             </div>
                         </div>
 
-                        <div class="id-card">
-                            <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                            <div class="id-content">
-                                <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
-                                <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
-                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                <div class="id-field"><label>Spécialité</label><div class="value">stratégie</div></div>
-                                <div class="id-field"><label>Date d'Entrée</label><div class="value">03 fev 2026</div></div>
-                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                <div class="id-field"><label>Opérations Menées</label><div class="value">2</div></div>
-                                <div class="id-field"><label>Taux de Réussite</label><div class="value">100%</div></div>
-                                <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                <div class="id-photo">
-                                    <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
-                                </div>
-                            </div>
+                        <div id="no-results" class="no-results" style="display: none;">
+                            ⚠️ Aucun Membre Trouvé
                         </div>
                     </div>
-
-<div class="id-card">
-                            <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                            <div class="id-content">
-                                <div class="id-field"><label>Nom de Code</label><div class="value">Sowane Turie</div></div>
-                                <div class="id-field"><label>Numéro ID</label><div class="value">#003</div></div>
-                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                <div class="id-field"><label>Spécialité</label><div class="value">Tir</div></div>
-                                <div class="id-field"><label>Date d'Entrée</label><div class="value">13 fev 2026</div></div>
-                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
-                                <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
-                                <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                <div class="id-photo">
-                                    <img src="https://i.imgur.com/F62eAf2.jpeg" class="photo-img">
-                                </div>
-                            </div>
-                        </div>
 
                     <!-- SECTION ABSENCES -->
                     <div class="content-section" id="absence">
@@ -379,6 +461,31 @@
                 document.getElementById(item.getAttribute('data-section')).classList.add('active');
             });
         });
+
+        // FONCTION DE RECHERCHE PAR ID
+        function searchByID() {
+            const input = document.getElementById('searchInput').value.toLowerCase().replace('#', '');
+            const cards = document.querySelectorAll('#id-cards-container .id-card');
+            const noResults = document.getElementById('no-results');
+            let hasResults = false;
+
+            cards.forEach(card => {
+                const cardID = card.getAttribute('data-id');
+                if (input === '' || cardID.includes(input)) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Afficher ou cacher le message "Aucun résultat"
+            if (hasResults || input === '') {
+                noResults.style.display = 'none';
+            } else {
+                noResults.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
