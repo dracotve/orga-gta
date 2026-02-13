@@ -83,26 +83,23 @@
             display: none;
         }
 
-.photo-img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto;
-    border: 3px solid var(--dark-3);
-    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-}
+        .photo-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            border: 3px solid var(--dark-3);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+        }
 
-/* --- GRILLE POUR FICHES ABSENCE --- */
-.absence-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 20px;
-}
-
-
-
+        /* --- GRILLE POUR FICHES ABSENCE --- */
+        .absence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
 
         /* --- STYLE DASHBOARD --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -139,13 +136,12 @@
         .operation-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-gold); letter-spacing: 2px; margin-bottom: 15px; }
         .operation-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
         .operation-detail strong { color: var(--primary-red); text-transform: uppercase; font-weight: 700; }
-        .id-card { max-width: 800px; background: var(--dark-2); border: 4px solid var(--primary-red); padding: 50px; position: relative; clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px)); }
+        .id-card { max-width: 800px; background: var(--dark-2); border: 4px solid var(--primary-red); padding: 50px; position: relative; clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px)); margin-bottom: 30px; }
         .id-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-red); letter-spacing: 4px; text-align: center; border-bottom: 3px solid var(--dark-3); padding-bottom: 30px; margin-bottom: 40px; }
         .id-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .id-field label { display: block; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
         .id-field .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--primary-gold); }
         .photo-placeholder { width: 200px; height: 200px; background: var(--dark-3); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-red); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
-
     </style>
 </head>
 <body>
@@ -163,7 +159,7 @@
     <div class="container" id="main-content">
         <div class="dashboard">
             <div class="dashboard-header">
-                <div class="dashboard-logo"><h2>Skarll'13    </h2></div>
+                <div class="dashboard-logo"><h2>Skarll'13</h2></div>
             </div>
 
             <div class="dashboard-main">
@@ -175,6 +171,7 @@
                 </div>
 
                 <div class="content-area">
+                    <!-- SECTION INFORMATION -->
                     <div class="content-section active" id="information">
                         <h2 class="section-header">Information Générale</h2>
                         <div class="stats-grid">
@@ -210,6 +207,7 @@
                         </div>
                     </div>
 
+                    <!-- SECTION PLANNING -->
                     <div class="content-section" id="planning">
                         <h2 class="section-header">Planning des Opérations</h2>
 
@@ -256,9 +254,10 @@
                         </div>
                     </div>
 
-                    
+                    <!-- SECTION CARTES D'IDENTITÉ -->
                     <div class="content-section" id="id-card">
                         <h2 class="section-header">Carte d'Identité</h2>
+                        
                         <div class="id-card">
                             <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
                             <div class="id-content">
@@ -271,13 +270,14 @@
                                 <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
                                 <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
                                 <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                               <div class="id-photo">
-    <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
-</div>
-
+                                <div class="id-photo">
+                                    <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
+                                </div>
                             </div>
+                        </div>
 
-                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                        <div class="id-card">
+                            <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
                             <div class="id-content">
                                 <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
                                 <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
@@ -289,58 +289,55 @@
                                 <div class="id-field"><label>Taux de Réussite</label><div class="value">100%</div></div>
                                 <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
                                 <div class="id-photo">
-    <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
+                                    <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- SECTION ABSENCES -->
+                    <div class="content-section" id="absence">
+                        <h2 class="section-header">Absences Membres</h2>
+
+                        <div class="absence-grid">
+                            <!-- FICHE ABSENCE 1 -->
+                            <div class="id-card">
+                                <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
+                                    <div class="id-field"><label>Date Départ</label><div class="value">13 Février 2026</div></div>
+                                    <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
+                                    <div class="id-field"><label>Raison</label><div class="value">test</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FICHE ABSENCE 2 -->
+                            <div class="id-card">
+                                <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
+                                    <div class="id-field"><label>Date Départ</label><div class="value">12 Février 2026</div></div>
+                                    <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
+                                    <div class="id-field"><label>Raison</label><div class="value">test</div></div>
+                                    <div class="id-photo">
+                                        <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
-<div class="content-section" id="absence">
-    <h2 class="section-header">Absences Membres</h2>
-
-    <div class="absence-grid">
-
-        <!-- FICHE ABSENCE 1 -->
-        <div class="id-card">
-            <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
-            <div class="id-content">
-                <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
-                <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
-                <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
-                <div class="id-field"><label>Date Départ</label><div class="value">13 Février 2026</div></div>
-                <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
-                <div class="id-field"><label>Raison</label><div class="value">test</div></div>
-                <div class="id-photo">
-                    <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
-                </div>
-            </div>
-        </div>
-
-        <!-- FICHE ABSENCE 2 -->
-        <div class="id-card">
-            <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
-            <div class="id-content">
-                <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
-                <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
-                <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
-                <div class="id-field"><label>Date Départ</label><div class="value">12 Février 2026</div></div>
-                <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
-                <div class="id-field"><label>Raison</label><div class="value">test</div></div>
-                <div class="id-photo">
-                    <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-
-
 
     <script>
         function checkLogin() {
