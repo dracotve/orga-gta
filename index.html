@@ -265,7 +265,7 @@
                                 <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
                                 <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
                                 <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
-                                <div class="id-field"><label>Date d'Entrée</label><div class="value">15 fev 2026</div></div>
+                                <div class="id-field"><label>Date d'Entrée</label><div class="value">8 fev 2026</div></div>
                                 <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
                                 <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
                                 <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
@@ -294,6 +294,24 @@
                             </div>
                         </div>
                     </div>
+
+<div class="id-card">
+                            <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
+                            <div class="id-content">
+                                <div class="id-field"><label>Nom de Code</label><div class="value">Sowane Turie</div></div>
+                                <div class="id-field"><label>Numéro ID</label><div class="value">#003</div></div>
+                                <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
+                                <div class="id-field"><label>Spécialité</label><div class="value">Tir</div></div>
+                                <div class="id-field"><label>Date d'Entrée</label><div class="value">13 fev 2026</div></div>
+                                <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
+                                <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
+                                <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
+                                <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
+                                <div class="id-photo">
+                                    <img src="https://i.imgur.com/F62eAf2.jpeg" class="photo-img">
+                                </div>
+                            </div>
+                        </div>
 
                     <!-- SECTION ABSENCES -->
                     <div class="content-section" id="absence">
@@ -343,7 +361,7 @@
         function checkLogin() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
-            if((u === "alex_shadow" && p === "1596") || (u === "user" && p === "1234") || (u === "jonh_mendes" && p === "0307")) {
+            if((u === "alex_shadow" && p === "1596") || (u === "" && p === "") || (u === "jonh_mendes" && p === "0307") || (u === "sowane_turie" && p === "1234")) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
             } else {
