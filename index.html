@@ -16,6 +16,20 @@
             --text-muted: #9ca3af;
         }
 
+        /* Style Nord - Tons bleus froids */
+        body.nord-theme {
+            --primary-color: #3b82f6;
+            --secondary-color: #06b6d4;
+            --accent-color: #60a5fa;
+        }
+
+        /* Style Sud - Tons oranges/rouges chauds */
+        body.sud-theme {
+            --primary-color: #f97316;
+            --secondary-color: #dc2626;
+            --accent-color: #fb923c;
+        }
+
         /* --- SYSTÈME DE CONNEXION --- */
         #login-overlay {
             position: fixed;
@@ -23,7 +37,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--dark-1);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,34 +46,121 @@
         }
 
         .login-box {
-            background: var(--dark-2);
+            background: transparent;
             padding: 40px;
-            border: 3px solid var(--primary-red);
             width: 90%;
-            max-width: 400px;
+            max-width: 900px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
 
         .login-box h2 {
             font-family: 'Bebas Neue', sans-serif;
             color: var(--primary-red);
             font-size: 2.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             letter-spacing: 3px;
+        }
+
+        /* Sélection Nord/Sud - Style côte à côte */
+        .territory-selection {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .territory-option {
+            flex: 1;
+            max-width: 400px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            padding: 0;
+            transition: all 0.3s ease;
+            background: transparent;
+            position: relative;
+        }
+
+        .territory-option::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border: 3px solid var(--dark-3);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .territory-option:hover::before {
+            border-color: var(--primary-red);
+            opacity: 1;
+        }
+
+        .territory-option.selected::before {
+            border-color: var(--primary-gold);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+
+        .territory-option img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .territory-option:hover img {
+            filter: brightness(1.2);
+        }
+
+        .territory-option.selected img {
+            filter: brightness(1.3);
+        }
+
+        .territory-name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--primary-gold);
+            font-size: 3rem;
+            letter-spacing: 4px;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 10px rgba(245, 158, 11, 0.5);
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .territory-option.selected .territory-name {
+            color: #fff;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.9),
+                0 0 20px rgba(245, 158, 11, 0.8),
+                0 0 30px rgba(245, 158, 11, 0.6);
+        }
+
+        .login-inputs {
+            margin-top: 40px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .login-box input {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            background: var(--dark-3);
+            background: rgba(42, 42, 42, 0.8);
             border: 1px solid var(--dark-3);
             color: white;
             font-family: 'Saira Condensed', sans-serif;
             font-size: 1.1rem;
             outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-box input:focus {
+            border-color: var(--primary-red);
         }
 
         .login-box button {
@@ -77,6 +179,12 @@
         .login-box button:hover {
             background: var(--primary-gold);
             color: var(--dark-1);
+        }
+
+        .login-box button:disabled {
+            background: var(--dark-3);
+            color: var(--text-muted);
+            cursor: not-allowed;
         }
 
         #main-content {
@@ -113,7 +221,7 @@
         }
 
         .search-bar input:focus {
-            border-color: var(--primary-red);
+            border-color: var(--primary-color, var(--primary-red));
         }
 
         .search-bar input::placeholder {
@@ -127,7 +235,7 @@
             right: 25px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--primary-red);
+            color: var(--primary-color, var(--primary-red));
             font-size: 1.5rem;
             pointer-events: none;
         }
@@ -144,43 +252,55 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Saira Condensed', sans-serif; background: var(--dark-1); color: var(--accent-white); overflow-x: hidden; }
         body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(220, 38, 38, 0.03) 10px, rgba(220, 38, 38, 0.03) 20px); pointer-events: none; z-index: 0; }
+        
+        body.nord-theme::before { background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(59, 130, 246, 0.03) 10px, rgba(59, 130, 246, 0.03) 20px); }
+        body.sud-theme::before { background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(249, 115, 22, 0.03) 10px, rgba(249, 115, 22, 0.03) 20px); }
+        
         .container { position: relative; z-index: 1; }
-        .dashboard-header { background: var(--dark-2); border-bottom: 4px solid var(--primary-red); padding: 25px 50px; display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .dashboard-header::after { content: ''; position: absolute; bottom: -4px; right: 0; width: 200px; height: 4px; background: var(--primary-gold); }
-        .dashboard-logo h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-red); letter-spacing: 4px; text-shadow: 3px 3px 0 var(--primary-gold); }
+        .dashboard-header { background: var(--dark-2); border-bottom: 4px solid var(--primary-color, var(--primary-red)); padding: 25px 50px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .dashboard-header::after { content: ''; position: absolute; bottom: -4px; right: 0; width: 200px; height: 4px; background: var(--secondary-color, var(--primary-gold)); }
+        .dashboard-logo h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-color, var(--primary-red)); letter-spacing: 4px; text-shadow: 3px 3px 0 var(--secondary-color, var(--primary-gold)); }
         .dashboard-main { display: flex; min-height: calc(100vh - 100px); }
         .sidebar { width: 300px; background: var(--dark-2); border-right: 3px solid var(--dark-3); padding: 40px 0; }
         .sidebar-item { padding: 20px 40px; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; border-left: 4px solid transparent; position: relative; }
-        .sidebar-item:hover { background: rgba(220, 38, 38, 0.1); border-left-color: var(--primary-red); }
-        .sidebar-item.active { background: rgba(220, 38, 38, 0.2); border-left-color: var(--primary-red); color: var(--primary-gold); }
+        .sidebar-item:hover { background: rgba(220, 38, 38, 0.1); border-left-color: var(--primary-color, var(--primary-red)); }
+        
+        body.nord-theme .sidebar-item:hover { background: rgba(59, 130, 246, 0.1); }
+        body.sud-theme .sidebar-item:hover { background: rgba(249, 115, 22, 0.1); }
+        
+        .sidebar-item.active { background: rgba(220, 38, 38, 0.2); border-left-color: var(--primary-color, var(--primary-red)); color: var(--secondary-color, var(--primary-gold)); }
+        
+        body.nord-theme .sidebar-item.active { background: rgba(59, 130, 246, 0.2); color: var(--accent-color); }
+        body.sud-theme .sidebar-item.active { background: rgba(249, 115, 22, 0.2); color: var(--accent-color); }
+        
         .content-area { flex: 1; padding: 50px; background: var(--dark-1); }
         .content-section { display: none; animation: fadeInContent 0.5s ease; }
         .content-section.active { display: block; }
         @keyframes fadeInContent { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-        .section-header { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-red); letter-spacing: 4px; margin-bottom: 40px; text-shadow: 3px 3px 0 var(--primary-gold); position: relative; padding-bottom: 20px; }
-        .section-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 150px; height: 4px; background: linear-gradient(90deg, var(--primary-red), var(--primary-gold)); }
+        .section-header { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-color, var(--primary-red)); letter-spacing: 4px; margin-bottom: 40px; text-shadow: 3px 3px 0 var(--secondary-color, var(--primary-gold)); position: relative; padding-bottom: 20px; }
+        .section-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 150px; height: 4px; background: linear-gradient(90deg, var(--primary-color, var(--primary-red)), var(--secondary-color, var(--primary-gold))); }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px; }
         .stat-card { background: var(--dark-2); border: 3px solid var(--dark-3); padding: 35px; position: relative; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); transition: all 0.3s ease; }
-        .stat-card::before { content: ''; position: absolute; bottom: -3px; right: -3px; width: 40px; height: 40px; background: var(--primary-gold); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+        .stat-card::before { content: ''; position: absolute; bottom: -3px; right: -3px; width: 40px; height: 40px; background: var(--secondary-color, var(--primary-gold)); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
         .stat-label { font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-weight: 600; }
-        .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-red); letter-spacing: 2px; text-shadow: 2px 2px 0 var(--primary-gold); }
+        .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--primary-color, var(--primary-red)); letter-spacing: 2px; text-shadow: 2px 2px 0 var(--secondary-color, var(--primary-gold)); }
         .info-panel { background: var(--dark-2); border: 3px solid var(--dark-3); padding: 40px; margin-bottom: 30px; }
-        .info-panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-gold); letter-spacing: 3px; margin-bottom: 20px; }
+        .info-panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--secondary-color, var(--primary-gold)); letter-spacing: 3px; margin-bottom: 20px; }
         .info-panel p { font-size: 1.2rem; line-height: 1.8; color: var(--text-muted); }
-        .operation-card { background: var(--dark-2); border-left: 5px solid var(--primary-red); padding: 30px; margin-bottom: 25px; position: relative; transition: all 0.3s ease; }
+        .operation-card { background: var(--dark-2); border-left: 5px solid var(--primary-color, var(--primary-red)); padding: 30px; margin-bottom: 25px; position: relative; transition: all 0.3s ease; }
         .operation-status { position: absolute; top: 30px; right: 30px; padding: 8px 20px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px); }
-        .status-active { background: var(--primary-red); color: white; }
-        .status-planned { background: var(--primary-gold); color: var(--dark-1); }
+        .status-active { background: var(--primary-color, var(--primary-red)); color: white; }
+        .status-planned { background: var(--secondary-color, var(--primary-gold)); color: var(--dark-1); }
         .status-completed { background: var(--dark-3); color: var(--text-muted); }
-        .operation-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-gold); letter-spacing: 2px; margin-bottom: 15px; }
+        .operation-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--secondary-color, var(--primary-gold)); letter-spacing: 2px; margin-bottom: 15px; }
         .operation-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-        .operation-detail strong { color: var(--primary-red); text-transform: uppercase; font-weight: 700; }
-        .id-card { max-width: 800px; background: var(--dark-2); border: 4px solid var(--primary-red); padding: 50px; position: relative; clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px)); margin-bottom: 30px; }
-        .id-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-red); letter-spacing: 4px; text-align: center; border-bottom: 3px solid var(--dark-3); padding-bottom: 30px; margin-bottom: 40px; }
+        .operation-detail strong { color: var(--primary-color, var(--primary-red)); text-transform: uppercase; font-weight: 700; }
+        .id-card { max-width: 800px; background: var(--dark-2); border: 4px solid var(--primary-color, var(--primary-red)); padding: 50px; position: relative; clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px)); margin-bottom: 30px; }
+        .id-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary-color, var(--primary-red)); letter-spacing: 4px; text-align: center; border-bottom: 3px solid var(--dark-3); padding-bottom: 30px; margin-bottom: 40px; }
         .id-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .id-field label { display: block; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        .id-field .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--primary-gold); }
-        .photo-placeholder { width: 200px; height: 200px; background: var(--dark-3); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-red); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+        .id-field .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--secondary-color, var(--primary-gold)); }
+        .photo-placeholder { width: 200px; height: 200px; background: var(--dark-3); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--primary-color, var(--primary-red)); clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
         
         .no-results {
             text-align: center;
@@ -197,17 +317,32 @@
     <div id="login-overlay">
         <div class="login-box">
             <h2>ACCÈS Skarll'13</h2>
-            <input type="text" id="username" placeholder="NOM DE CODE">
-            <input type="password" id="password" placeholder="MOT DE PASSE">
-            <button onclick="checkLogin()">IDENTIFICATION</button>
-            <p id="error-msg" style="color: var(--primary-red); margin-top: 15px; display: none; font-weight: bold;">ACCÈS REFUSÉ</p>
+            
+            <!-- Sélection du territoire -->
+            <div class="territory-selection">
+                <div class="territory-option" data-territory="nord" onclick="selectTerritory('nord')">
+                    <img src="https://i.imgur.com/LFTz9Wd.png" alt="Nord">
+                    <div class="territory-name">NORD</div>
+                </div>
+                <div class="territory-option" data-territory="sud" onclick="selectTerritory('sud')">
+                    <img src="https://i.imgur.com/LFTz9Wd.png" alt="Sud">
+                    <div class="territory-name">SUD</div>
+                </div>
+            </div>
+
+            <div class="login-inputs">
+                <input type="text" id="username" placeholder="NOM DE CODE">
+                <input type="password" id="password" placeholder="MOT DE PASSE">
+                <button onclick="checkLogin()" id="loginBtn" disabled>IDENTIFICATION</button>
+                <p id="error-msg" style="color: var(--primary-red); margin-top: 15px; display: none; font-weight: bold;">ACCÈS REFUSÉ</p>
+            </div>
         </div>
     </div>
 
     <div class="container" id="main-content">
         <div class="dashboard">
             <div class="dashboard-header">
-                <div class="dashboard-logo"><h2>Skarll'13</h2></div>
+                <div class="dashboard-logo"><h2 id="territory-title">Skarll'13</h2></div>
             </div>
 
             <div class="dashboard-main">
@@ -218,248 +353,340 @@
                     <div class="sidebar-item" data-section="absence">📅 Absences</div>
                 </div>
 
-                <div class="content-area">
-                    <!-- SECTION INFORMATION -->
-                    <div class="content-section active" id="information">
-                        <h2 class="section-header">Information Générale</h2>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-label">Membres Actifs</div>
-                                <div class="stat-value">en cours de calcul</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Opérations Totales</div>
-                                <div class="stat-value">en cours de calcul</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Gains Totaux</div>
-                                <div class="stat-value">$calcul</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-label">Niveau Org</div>
-                                <div class="stat-value">calcul</div>
-                            </div>
-                        </div>
-
-                        <div class="info-panel">
-                            <h3>À Propos de l'Organisation</h3>
-                            <p>en cours d'écriture</p>
-                        </div>
-                        <div class="info-panel">
-                            <h3>Territoires Contrôlés</h3>
-                            <p>villa</p>
-                        </div>
-                        <div class="info-panel">
-                            <h3>Dernière Mise à Jour</h3>
-                            <p>Système mis à jour le 13 Février 2026</p>
-                        </div>
-                    </div>
-
-                    <!-- SECTION PLANNING -->
-                    <div class="content-section" id="planning">
-                        <h2 class="section-header">Planning des Opérations</h2>
-
-                        <div class="operation-card">
-                            <span class="operation-status status-active">En Cours</span>
-                            <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">test</p>
-                            <div class="operation-details">
-                                <div class="operation-detail"><strong>Date:</strong> 15 Février 2026</div>
-                                <div class="operation-detail"><strong>Heure:</strong> 22:00</div>
-                                <div class="operation-detail"><strong>Équipe:</strong> 6 membres</div>
-                                <div class="operation-detail"><strong>Gain estimé:</strong> $2.1M</div>
-                                <div class="operation-detail"><strong>Leader:</strong> Alex Shadow</div>
-                                <div class="operation-detail"><strong>Risque:</strong> Élevé</div>
-                            </div>
-                        </div>
-
-                        <div class="operation-card">
-                            <span class="operation-status status-planned">Planifiée</span>
-                            <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">testTransport de marchandises - Route maritime</p>
-                            <div class="operation-details">
-                                <div class="operation-detail"><strong>Date:</strong> 20 Février 2026</div>
-                                <div class="operation-detail"><strong>Heure:</strong> 03:00</div>
-                                <div class="operation-detail"><strong>Équipe:</strong> 4 membres</div>
-                                <div class="operation-detail"><strong>Gain estimé:</strong> $850K</div>
-                                <div class="operation-detail"><strong>Leader:</strong> Ghost</div>
-                                <div class="operation-detail"><strong>Risque:</strong> Moyen</div>
-                            </div>
-                        </div>
-
-                        <div class="operation-card">
-                            <span class="operation-status status-completed">Complétée</span>
-                            <h3 class="operation-title">Opération "test"</h3>
-                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">test</p>
-                            <div class="operation-details">
-                                <div class="operation-detail"><strong>Date:</strong> 10 Février 2026</div>
-                                <div class="operation-detail"><strong>Heure:</strong> 21:30</div>
-                                <div class="operation-detail"><strong>Équipe:</strong> 8 membres</div>
-                                <div class="operation-detail"><strong>Gain réel:</strong> $1.2M</div>
-                                <div class="operation-detail"><strong>Leader:</strong> Viper</div>
-                                <div class="operation-detail"><strong>Statut:</strong> Succès</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION CARTES D'IDENTITÉ -->
-                    <div class="content-section" id="id-card">
-                        <h2 class="section-header">Carte d'Identité</h2>
-                        
-                        <!-- BARRE DE RECHERCHE -->
-                        <div class="search-bar">
-                            <input type="text" id="searchInput" placeholder="🔍 Rechercher par Numéro ID (ex: #001)" onkeyup="searchByID()">
-                            <span class="search-icon">🔍</span>
-                        </div>
-
-                        <div id="id-cards-container">
-                            <!-- CARTE 1 -->
-                            <div class="id-card" data-id="001">
-                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
-                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                    <div class="id-field"><label>Spécialité</label><div class="value">Snipe/Informatique</div></div>
-                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">8 fev 2026</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
-                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
-                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                    <div class="id-photo">
-                                        <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- CARTE 2 -->
-                            <div class="id-card" data-id="002">
-                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
-                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                    <div class="id-field"><label>Spécialité</label><div class="value">stratégie</div></div>
-                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">03 fev 2026</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                    <div class="id-field"><label>Opérations Menées</label><div class="value">2</div></div>
-                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">100%</div></div>
-                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                    <div class="id-photo">
-                                        <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- CARTE 3 -->
-                            <div class="id-card" data-id="003">
-                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value">Sowane Turie</div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#003</div></div>
-                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                    <div class="id-field"><label>Spécialité</label><div class="value">Tir</div></div>
-                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">13 fev 2026</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
-                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">nul%</div></div>
-                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                    <div class="id-photo">
-                                        <img src="https://i.imgur.com/F62eAf2.jpeg" class="photo-img">
-                                    </div>
-                                </div>
-                            
-                             <!-- CARTE 4 -->
-                            <div class="id-card" data-id="00">
-                                <div class="id-header"><h3>Skarll'13 - ID MEMBRE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value"></div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#004</div></div>
-                                    <div class="id-field"><label>Rang</label><div class="value">associer</div></div>
-                                    <div class="id-field"><label>Spécialité</label><div class="value"></div></div>
-                                    <div class="id-field"><label>Date d'Entrée</label><div class="value"> fev 2026</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-red);">Actif</div></div>
-                                    <div class="id-field"><label>Opérations Menées</label><div class="value">0</div></div>
-                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">null%</div></div>
-                                    <div class="id-field"><label>Trust Point</label><div class="value">null</div></div>
-                                    <div class="id-photo">
-                                        <img src="" class="photo-img">
-                                    </div>
-                                </div>
-                            </div>                                                                         
-                            </div>
-                        </div>
-
-                        <div id="no-results" class="no-results" style="display: none;">
-                            ⚠️ Aucun Membre Trouvé
-                        </div>
-                    </div>
-
-                    <!-- SECTION ABSENCES -->
-                    <div class="content-section" id="absence">
-                        <h2 class="section-header">Absences Membres</h2>
-
-                        <div class="absence-grid">
-                            <!-- FICHE ABSENCE 1 -->
-                            <div class="id-card">
-                                <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value">Alex Shadow</div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#001</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
-                                    <div class="id-field"><label>Date Départ</label><div class="value">13 Février 2026</div></div>
-                                    <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
-                                    <div class="id-field"><label>Raison</label><div class="value">test</div></div>
-                                    <div class="id-photo">
-                                        <img src="https://i.imgur.com/rH9CpGK.jpeg" class="photo-img">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- FICHE ABSENCE 2 -->
-                            <div class="id-card">
-                                <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
-                                <div class="id-content">
-                                    <div class="id-field"><label>Nom de Code</label><div class="value">Jonh Mendes</div></div>
-                                    <div class="id-field"><label>Numéro ID</label><div class="value">#002</div></div>
-                                    <div class="id-field"><label>Statut</label><div class="value" style="color:var(--primary-gold)">En Absence</div></div>
-                                    <div class="id-field"><label>Date Départ</label><div class="value">12 Février 2026</div></div>
-                                    <div class="id-field"><label>Date Retour</label><div class="value">Inconnue</div></div>
-                                    <div class="id-field"><label>Raison</label><div class="value">test</div></div>
-                                    <div class="id-photo">
-                                        <img src="https://i.imgur.com/rGOeJ8t.jpeg" class="photo-img">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="content-area" id="content-container">
+                    <!-- Le contenu sera injecté dynamiquement selon le territoire -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let selectedTerritory = null;
+
+        // Données pour le NORD
+        const nordData = {
+            title: "Skarll'13 - NORD",
+            stats: {
+                membres: "null",
+                operations: "0",
+                gains: "$null",
+                niveau: "1"
+            },
+            about: "",
+            territories: "",
+            members: [
+                {
+                    id: "001",
+                    name: "Alex Shadow",
+                    rang: "Chef du Nord",
+                    specialite: "Snipe/Informatique",
+                    dateEntree: "8 fev 2026",
+                    operations: "0",
+                    tauxReussite: "null%",
+                    trustPoint: "null",
+                    photo: "https://i.imgur.com/rH9CpGK.jpeg"
+                },
+                {
+                    id: "002",
+                    name: "Jonh Mendes",
+                    rang: "Lieutenant Nord",
+                    specialite: "Stratégie",
+                    dateEntree: "3 fev 2026",
+                    operations: "2",
+                    tauxReussite: "100%",
+                    trustPoint: "90",
+                    photo: "https://i.imgur.com/rGOeJ8t.jpeg"
+                }
+            ],
+            operations: [
+                {
+                    status: "active",
+                    title: "test",
+                    description: "",
+                    date: "16 Février 2026",
+                    heure: "03:00",
+                    equipe: "4 membres",
+                    gain: "$800K",
+                    leader: "Alex Shadow",
+                    risque: "Moyen"
+                },
+                {
+                    status: "planned",
+                    title: "test",
+                    description: "",
+                    date: "18 Février 2026",
+                    heure: "22:00",
+                    equipe: "3 membres",
+                    gain: "$500K",
+                    leader: "Jonh Mendes",
+                    risque: "Élevé"
+                }
+            ],
+            absences: [
+                {
+                    id: "001",
+                    name: "Alex Shadow",
+                    dateDepart: "13 Février 2026",
+                    dateRetour: "15 Février 2026",
+                    raison: "test",
+                    photo: "https://i.imgur.com/rH9CpGK.jpeg"
+                }
+            ]
+        };
+
+        // Données pour le SUD
+        const sudData = {
+            title: "Skarll'13 - SUD",
+            stats: {
+                membres: "null",
+                operations: "0",
+                gains: "$null",
+                niveau: "1"
+            },
+            about: "",
+            territories: "",
+            members: [
+                {
+                    id: "003",
+                    name: "Sowane Turie",
+                    rang: "Chef du Sud",
+                    specialite: "Tir/Combat rapproché",
+                    dateEntree: "13 fev 2026",
+                    operations: "1",
+                    tauxReussite: "100%",
+                    trustPoint: "75",
+                    photo: "https://i.imgur.com/F62eAf2.jpeg"
+                },
+                {
+                    id: "004",
+                    name: "",
+                    rang: "Associé",
+                    specialite: "Conduite/Évasion",
+                    dateEntree: "14 fev 2026",
+                    operations: "0",
+                    tauxReussite: "null",
+                    trustPoint: "null",
+                    photo: ""
+                }
+            ],
+            operations: [
+                {
+                    status: "active",
+                    title: "test",
+                    description: "",
+                    date: "15 Février 2026",
+                    heure: "21:00",
+                    equipe: "2 membres",
+                    gain: "$350K",
+                    leader: "Sowane Turie",
+                    risque: "Très Élevé"
+                },
+                {
+                    status: "planned",
+                    title: "test",
+                    description: "",
+                    date: "20 Février 2026",
+                    heure: "14:30",
+                    equipe: "2 membres",
+                    gain: "$1.2M",
+                    leader: "Sowane Turie",
+                    risque: "Extrême"
+                }
+            ],
+            absences: [
+                {
+                    id: "004",
+                    name: "test",
+                    dateDepart: "14 Février 2026",
+                    dateRetour: "16 Février 2026",
+                    raison: "Acquisition véhicules",
+                    photo: ""
+                }
+            ]
+        };
+
+        function selectTerritory(territory) {
+            selectedTerritory = territory;
+            
+            document.querySelectorAll('.territory-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            document.querySelector(`[data-territory="${territory}"]`).classList.add('selected');
+            
+            document.getElementById('loginBtn').disabled = false;
+        }
+
         function checkLogin() {
+            if (!selectedTerritory) {
+                document.getElementById('error-msg').textContent = 'VEUILLEZ SÉLECTIONNER UN TERRITOIRE';
+                document.getElementById('error-msg').style.display = 'block';
+                return;
+            }
+
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
-            if((u === "alex_shadow" && p === "1596") || (u === "" && p === "") || (u === "jonh_mendes" && p === "0307") || (u === "sowane_turie" && p === "1234")) {
+            
+            if((u === "alex_shadow" && p === "1596") || (u === "" && p === "") || (u === "jonh_mendes" && p === "0307") || (u === "sowane_turie" && p === "1234") || (u === "flo_admin" && p === "1234")) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
+                
+                // Appliquer le thème
+                document.body.classList.add(selectedTerritory + '-theme');
+                
+                // Charger les données du territoire
+                loadTerritoryData(selectedTerritory);
+                
+                localStorage.setItem('selectedTerritory', selectedTerritory);
             } else {
+                document.getElementById('error-msg').textContent = 'ACCÈS REFUSÉ';
                 document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
-        const contentSections = document.querySelectorAll('.content-section');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => {
+        function loadTerritoryData(territory) {
+            const data = territory === 'nord' ? nordData : sudData;
+            
+            // Mettre à jour le titre
+            document.getElementById('territory-title').textContent = data.title;
+            
+            // Générer le contenu
+            const content = `
+                <!-- SECTION INFORMATION -->
+                <div class="content-section active" id="information">
+                    <h2 class="section-header">Information Générale</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Membres Actifs</div>
+                            <div class="stat-value">${data.stats.membres}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Opérations Totales</div>
+                            <div class="stat-value">${data.stats.operations}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Gains Totaux</div>
+                            <div class="stat-value">${data.stats.gains}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Niveau Territoire</div>
+                            <div class="stat-value">${data.stats.niveau}</div>
+                        </div>
+                    </div>
+
+                    <div class="info-panel">
+                        <h3>À Propos du Territoire ${territory.toUpperCase()}</h3>
+                        <p>${data.about}</p>
+                    </div>
+                    <div class="info-panel">
+                        <h3>Zones Contrôlées</h3>
+                        <p>${data.territories}</p>
+                    </div>
+                    <div class="info-panel">
+                        <h3>Dernière Mise à Jour</h3>
+                        <p>Système mis à jour le 15 Février 2026</p>
+                    </div>
+                </div>
+
+                <!-- SECTION PLANNING -->
+                <div class="content-section" id="planning">
+                    <h2 class="section-header">Planning des Opérations ${territory.toUpperCase()}</h2>
+                    ${data.operations.map(op => `
+                        <div class="operation-card">
+                            <span class="operation-status status-${op.status === 'active' ? 'active' : 'planned'}">${op.status === 'active' ? 'En Cours' : 'Planifiée'}</span>
+                            <h3 class="operation-title">${op.title}</h3>
+                            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">${op.description}</p>
+                            <div class="operation-details">
+                                <div class="operation-detail"><strong>Date:</strong> ${op.date}</div>
+                                <div class="operation-detail"><strong>Heure:</strong> ${op.heure}</div>
+                                <div class="operation-detail"><strong>Équipe:</strong> ${op.equipe}</div>
+                                <div class="operation-detail"><strong>Gain estimé:</strong> ${op.gain}</div>
+                                <div class="operation-detail"><strong>Leader:</strong> ${op.leader}</div>
+                                <div class="operation-detail"><strong>Risque:</strong> ${op.risque}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- SECTION CARTES D'IDENTITÉ -->
+                <div class="content-section" id="id-card">
+                    <h2 class="section-header">Membres - Tous Territoires</h2>
+                    
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="🔍 Rechercher par Numéro ID (ex: #001)" onkeyup="searchByID()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+
+                    <div id="id-cards-container">
+                        ${[...nordData.members, ...sudData.members].map(member => {
+                            const memberTerritory = parseInt(member.id) <= 2 ? 'NORD' : 'SUD';
+                            return `
+                            <div class="id-card" data-id="${member.id}">
+                                <div class="id-header"><h3>Skarll'13 ${memberTerritory} - ID MEMBRE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">${member.name}</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#${member.id}</div></div>
+                                    <div class="id-field"><label>Rang</label><div class="value">${member.rang}</div></div>
+                                    <div class="id-field"><label>Spécialité</label><div class="value">${member.specialite}</div></div>
+                                    <div class="id-field"><label>Date d'Entrée</label><div class="value">${member.dateEntree}</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color: var(--primary-color);">Actif</div></div>
+                                    <div class="id-field"><label>Opérations Menées</label><div class="value">${member.operations}</div></div>
+                                    <div class="id-field"><label>Taux de Réussite</label><div class="value">${member.tauxReussite}</div></div>
+                                    <div class="id-field"><label>Trust Point</label><div class="value">${member.trustPoint}</div></div>
+                                    <div class="id-photo">
+                                        ${member.photo ? `<img src="${member.photo}" class="photo-img">` : '<div class="photo-placeholder">?</div>'}
+                                    </div>
+                                </div>
+                            </div>
+                        `}).join('')}
+                    </div>
+
+                    <div id="no-results" class="no-results" style="display: none;">
+                        ⚠️ Aucun Membre Trouvé
+                    </div>
+                </div>
+
+                <!-- SECTION ABSENCES -->
+                <div class="content-section" id="absence">
+                    <h2 class="section-header">Absences - Tous Territoires</h2>
+
+                    <div class="absence-grid">
+                        ${[...nordData.absences, ...sudData.absences].map(absence => `
+                            <div class="id-card">
+                                <div class="id-header"><h3>Skarll'13 - FICHE ABSENCE</h3></div>
+                                <div class="id-content">
+                                    <div class="id-field"><label>Nom de Code</label><div class="value">${absence.name}</div></div>
+                                    <div class="id-field"><label>Numéro ID</label><div class="value">#${absence.id}</div></div>
+                                    <div class="id-field"><label>Statut</label><div class="value" style="color:var(--secondary-color)">En Absence</div></div>
+                                    <div class="id-field"><label>Date Départ</label><div class="value">${absence.dateDepart}</div></div>
+                                    <div class="id-field"><label>Date Retour</label><div class="value">${absence.dateRetour}</div></div>
+                                    <div class="id-field"><label>Raison</label><div class="value">${absence.raison}</div></div>
+                                    <div class="id-photo">
+                                        ${absence.photo ? `<img src="${absence.photo}" class="photo-img">` : '<div class="photo-placeholder">?</div>'}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('content-container').innerHTML = content;
+        }
+
+        // Navigation sidebar
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('sidebar-item')) {
+                const sidebarItems = document.querySelectorAll('.sidebar-item');
+                const contentSections = document.querySelectorAll('.content-section');
+                
                 sidebarItems.forEach(i => i.classList.remove('active'));
                 contentSections.forEach(s => s.classList.remove('active'));
-                item.classList.add('active');
-                document.getElementById(item.getAttribute('data-section')).classList.add('active');
-            });
+                
+                e.target.classList.add('active');
+                const section = e.target.getAttribute('data-section');
+                document.getElementById(section).classList.add('active');
+            }
         });
 
         // FONCTION DE RECHERCHE PAR ID
@@ -479,13 +706,19 @@
                 }
             });
 
-            // Afficher ou cacher le message "Aucun résultat"
             if (hasResults || input === '') {
                 noResults.style.display = 'none';
             } else {
                 noResults.style.display = 'block';
             }
         }
+
+        // Connexion avec Entrée
+        document.getElementById('password').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkLogin();
+            }
+        });
     </script>
 </body>
 </html>
